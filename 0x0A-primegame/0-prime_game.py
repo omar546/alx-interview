@@ -20,7 +20,8 @@ def get_prime_numbers(limit):
                 is_prime[multiple] = False
     return primes
 
-def determine_winner(rounds, limits):
+
+def isWinner(rounds, limits):
     """
     Determines the winner of the Prime Game.
     
