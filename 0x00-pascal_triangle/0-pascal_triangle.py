@@ -24,8 +24,3 @@ def pascal_triangle(n):
         pascal_triangle[i] = a_row
 
     return pascal_triangle
-
-# Example usage:
-n = 5
-for row in pascal_triangle(n):
-    print(row)
