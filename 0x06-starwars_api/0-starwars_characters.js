@@ -1,29 +1,25 @@
 #!/usr/bin/node
-/**
- * Displays all the characters from a Star Wars movie
- */
-
 const request = require('request');
-const movieID = process.argv[2] + '/';
-const movieAPI = 'https://swapi-api.hbtn.io/api/films/';
-// Initiates API request, allowing for awaiting promises
-request(movieAPI + movieID, async (error, response, body) => {
-  if (error) return console.error(error);
+const URL = 'https://swapi-api.hbtn.io/api';
 
-  // Retrieves URLs of each character in the film
-  const characterURLs = JSON.parse(body).characters;
+if (process.argv.length > 2) {
+  request(`${URL}/films/${process.argv[2]}/`, (err, _, body) => {
+    if (err) {
+      console.log(err);
+    }
+    const cURL = JSON.parse(body).characters;
+    const cName = cURL.map(
+      url => new Promise((resolve, reject) => {
+        request(url, (promiseErr, __, Body) => {
+          if (pErr) {
+            reject(pErr);
+          }
+          resolve(JSON.parse(Body).name);
+        });
+      }));
 
-  // Utilizes the URL list to fetch character details
-  // Awaiting ensures orderly resolution of requests
-  for (const characterURL of characterURLs) {
-    await new Promise((resolve, reject) => {
-      request(characterURL, (error, response, body) => {
-        if (error) return console.error(error);
-
-        // Retrieves and prints each character's name in the order of their URLs
-        console.log(JSON.parse(body).name);
-        resolve();
-      });
-    });
-  }
-});
+    Promise.all(cName)
+      .then(names => console.log(names.join('\n')))
+      .catch(Err => console.log(Err));
+  });
+}
