@@ -11,8 +11,8 @@ if (process.argv.length > 2) {
     const cName = cURL.map(
       url => new Promise((resolve, reject) => {
         request(url, (promiseErr, __, Body) => {
-          if (pErr) {
-            reject(pErr);
+          if (promiseErr) {
+            reject(promiseErr);
           }
           resolve(JSON.parse(Body).name);
         });
